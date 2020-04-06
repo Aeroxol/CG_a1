@@ -10,6 +10,7 @@ static const char*	frag_shader_path = "../bin/shaders/circ.frag";
 static const uint	MIN_TESS = 3;		// minimum tessellation factor (down to a triangle)
 static const uint	MAX_TESS = 256;		// maximum tessellation factor (up to 256 triangles)
 uint				NUM_TESS = 7;		// initial tessellation factor of the circle as a polygon
+uint				NUM_CIRCLE = 3;		// number of circles
 
 //*************************************
 // window objects
@@ -78,7 +79,7 @@ void render()
 	for( auto& c : circles )
 	{
 		// per-circle update
-		c.update(t);
+		c.update(t, circles);
 
 		// update per-circle uniforms
 		GLint uloc;
@@ -119,10 +120,10 @@ void print_help()
 std::vector<vertex> create_circle_vertices( uint N )
 {
 	std::vector<vertex> v = {{ vec3(0), vec3(0,0,-1.0f), vec2(0.5f) }}; // origin
-	for( uint k=0; k <= N; k++ )
+	for (uint k = 0; k <= N; k++)
 	{
-		float t=PI*2.0f*k/float(N), c=cos(t), s=sin(t);
-		v.push_back( { vec3(c,s,0), vec3(0,0,-1.0f), vec2(c,s)*0.5f+0.5f } );
+		float t = PI * 2.0f * k / float(N), c = cos(t), s = sin(t);
+		v.push_back({ vec3(c,s,0), vec3(0,0,-1.0f), vec2(c,s) * 0.5f + 0.5f });
 	}
 	return v;
 }
